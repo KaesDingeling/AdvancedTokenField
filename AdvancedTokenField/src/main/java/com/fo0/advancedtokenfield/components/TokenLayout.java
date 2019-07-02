@@ -104,10 +104,23 @@ public class TokenLayout extends PolymerTemplate<TokenTemplate> {
 			getElement().setAttribute("data-id", "");
 		}
 		
-		if (data != null && StringUtils.isNotBlank(data.getTheme())) {
-			getElement().setAttribute("theme", data.getTheme());
+		if (data != null && StringUtils.isNotBlank(data.getStyle())) {
+			getElement().setAttribute("style", data.getStyle());
+			
+			if (data.getStyle().contains(";background-color:")) {
+				String colorStyle = data.getStyle().split(";background-color:")[0];
+				
+				if (StringUtils.isNotBlank(colorStyle)) {
+					remove.getElement().setAttribute("style", colorStyle);
+				} else {
+					remove.getElement().setAttribute("style", "");
+				}
+			} else {
+				remove.getElement().setAttribute("style", "");
+			}
 		} else {
-			getElement().setAttribute("theme", "");
+			getElement().setAttribute("style", "");
+			remove.getElement().setAttribute("style", "");
 		}
 	}
 	

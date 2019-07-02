@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fo0.advancedtokenfield.AdvancedTokenField;
 import com.fo0.advancedtokenfield.components.TokenLayout;
+import com.fo0.advancedtokenfield.data.enums.ETokenStyle;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,11 @@ public class Token {
 	@Getter private String id;
 	@Getter private String value;
 	@Getter private String description;
-	@Getter private String theme;
+	@Getter private String style;
+	
+	@Getter
+	@Setter
+	private Object data;
 	
 	@Getter
 	@Setter
@@ -54,11 +59,15 @@ public class Token {
 		this.description = description;
 		propertySupport.firePropertyChange("description", oldValue, description);
 	}
+
+	public void setStyle(ETokenStyle style) {
+		setStyle((style != null ? style.getStyle() : ""));
+	}
 	
-	public void setTheme(String theme) {
-		String oldValue = this.theme;
-		this.theme = theme;
-		propertySupport.firePropertyChange("theme", oldValue, theme);
+	public void setStyle(String style) {
+		String oldValue = this.style;
+		this.style = style;
+		propertySupport.firePropertyChange("style", oldValue, style);
 	}
 	
 	public boolean idMatch(Token other) {
@@ -67,6 +76,23 @@ public class Token {
 		}
 		
 		return false;
+	}
+	
+	public Token cloneWithLayout() {
+		Token token = clone();
+		token.setLayout(layout);
+		return token;
+	}
+	
+	@Override
+	public Token clone() {
+		return Token.builder()
+				.id(id)
+				.value(value)
+				.description(description)
+				.style(style)
+				.data(data)
+				.build();
 	}
 	
 	@Override
@@ -100,6 +126,6 @@ public class Token {
 				+ (id != null ? "id=" + id + ", " : "")
 				+ (value != null ? "value=" + value + ", " : "")
 				+ (description != null ? "description=" + description + ", " : "")
-				+ (theme != null ? "theme=" + theme + ", " : "") + "]";
+				+ (style != null ? "style=" + style + ", " : "") + "]";
 	}
 }

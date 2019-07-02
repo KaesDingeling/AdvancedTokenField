@@ -20,7 +20,15 @@ For latest dependency:
 ````
 ### Sample
 ````
-AdvancedTokenField tokenField = new AdvancedTokenField();
+AdvancedTokenField tokenField = new AdvancedTokenField(AdvancedTokenFieldConfig.builder()
+				.availableTokens(createAvailableDefaultTokens()) // List<Token>
+				.initTokens(createDefaultTokens()) // List<Token>
+				.allowTokenAdd(true)
+				.allowTokenAddNew(true)
+				.allowTokenRemove(true)
+				.build());
+
+add(tokenField);
 ````
 
 Check demo...

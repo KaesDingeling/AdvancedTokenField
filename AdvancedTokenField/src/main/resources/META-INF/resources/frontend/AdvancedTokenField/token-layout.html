@@ -8,15 +8,26 @@
 <dom-module id="advancedtokenfield-token-layout">
     <template>
     	<style>
-			:host {
+    		:host(.uniformMargin) {
+    			margin: var(--lumo-space-xs) !important;
+    		}
+    		
+			:host(:not(:first-child):not(.uniformMargin)) {
 				margin: var(--lumo-space-xs) 0 var(--lumo-space-xs) var(--lumo-space-s) !important;
+			}
+			
+			:host {
 				background-color: var(--lumo-contrast-5pct);
 				border-radius: var(--lumo-border-radius-m);
 				padding: 5px 10px;
 			}
 			
-			:host(:last-child) {
-				margin-right: var(--lumo-space-s) !important;
+			:host(:first-child:not(.uniformMargin)) {
+				margin: var(--lumo-space-xs) 0 var(--lumo-space-xs) var(--lumo-space-m) !important;
+			}
+			
+			:host(:first-child.uniformMargin) {
+    			margin: var(--lumo-space-xs) var(--lumo-space-xs) var(--lumo-space-xs) calc(var(--lumo-space-m) + var(--lumo-space-xs)) !important;
 			}
 			
 			:host #value, :host #remove {

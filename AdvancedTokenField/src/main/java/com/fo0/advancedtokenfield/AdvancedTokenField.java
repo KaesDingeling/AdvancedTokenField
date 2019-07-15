@@ -50,8 +50,6 @@ public class AdvancedTokenField extends HorizontalLayout {
 	private void init() {
 		getClassNames().add(CONSTANTS_AdvancedTokenField.ROOT_STYLE);
 		
-		setSpacing(false);
-		
 		if (config == null) {
 			config = AdvancedTokenFieldConfig.builder().build();
 		}

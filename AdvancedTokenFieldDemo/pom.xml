@@ -5,7 +5,7 @@
 
 	<groupId>com.fo0.advancedtokenfield.demo</groupId>
 	<artifactId>AdvancedTokenFieldDemo</artifactId>
-	<version>0.6.0.vaadin10</version>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
 
 	<name>AdvancedTokenFieldDemo</name>
@@ -26,7 +26,7 @@
 		<javax.servlet.api.version>4.0.1</javax.servlet.api.version>
 
 		<!-- Vaadin -->
-		<vaadin.version>14.0.5</vaadin.version>
+		<vaadin.version>14.0.6</vaadin.version>
 
 		<!-- Plugins -->
 		<maven.war.plugin.version>3.1.0</maven.war.plugin.version>
@@ -74,6 +74,13 @@
 			<artifactId>AdvancedTokenField</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<!-- Added to provide logging output as Flow uses -->
+        <!-- the unbound SLF4J no-operation (NOP) logger implementation -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
 	</dependencies>
 	
 	<repositories>
@@ -101,7 +108,37 @@
 	</pluginRepositories>
 
 	<build>
-		<pluginManagement>
+        <defaultGoal>jetty:run</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.15.v20190215</version>
+                <configuration>
+                    <scanIntervalSeconds>2</scanIntervalSeconds>
+                </configuration>
+            </plugin>
+
+            <!--
+                Take care of synchronizing java dependencies and imports.
+                It also creates webpack.config.js if not exists yet.
+            -->
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <version>${vaadin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-frontend</goal>
+	                        <goal>build-frontend</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <!--
+        <pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -121,8 +158,22 @@
 					<artifactId>maven-source-plugin</artifactId>
 					<version>${maven.source.plugin.version}</version>
 				</plugin>
+				<plugin>
+	                <groupId>com.vaadin</groupId>
+	                <artifactId>vaadin-maven-plugin</artifactId>
+	                <version>${vaadin.version}</version>
+	                <executions>
+	                    <execution>
+	                        <goals>
+	                            <goal>prepare-frontend</goal>
+	                            <goal>build-frontend</goal>
+	                        </goals>
+	                    </execution>
+	                </executions>
+	            </plugin>
 			</plugins>
 		</pluginManagement>
+		-->
 	</build>
 
 	<profiles>

@@ -13,32 +13,23 @@ import com.fo0.advancedtokenfield.data.model.AdvancedTokenFieldConfig;
 import com.fo0.advancedtokenfield.data.model.Token;
 import com.fo0.advancedtokenfield.utils.CONSTANTS_AdvancedTokenField;
 import com.google.common.collect.Lists;
-import com.vaadin.componentfactory.Autocomplete;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 import lombok.Getter;
 
-@HtmlImport("frontend://AdvancedTokenField/styles.html")
 public class AdvancedTokenField extends HorizontalLayout {
 	private static final long serialVersionUID = 8139678186130686248L;
 
 	@Getter
 	private HorizontalLayout tokens;
 	@Getter
-	private Autocomplete inputField;
+	private ComboBox<Token> inputField;
 
 	@Getter
 	private AdvancedTokenFieldConfig config;
 
-	/**
-	 * Should not be used
-	 */
-	@Deprecated
-	public AdvancedTokenField() {
-		this(null);
-	}
-	
 	public AdvancedTokenField(AdvancedTokenFieldConfig config) {
 		super();
 		
@@ -67,8 +58,19 @@ public class AdvancedTokenField extends HorizontalLayout {
 		expand(tokens);
 		
 		if (config.isAllowTokenAdd()) {
-			inputField = new Autocomplete();
-			inputField.addChangeListener(e -> setToInputField(e.getValue()));
+			inputField = new ComboBox<Token>();
+			
+			if (config.isAllowTokenAddNew()) {
+				inputField.setAllowCustomValue(true);
+				inputField.addCustomValueSetListener(e -> {
+					config.getSuggestionProvider().findAvailableOptions(e.getDetail(), config);
+					
+					System.out.println("Bambus: " + e.getDetail());
+				});
+			}
+			
+			/*
+			inputField.addValueChangeListener(e -> setToInputField(e.getValue()));
 			inputField.addAutocompleteValueAppliedListener(e -> {
 				Token token = config.getSuggestionProvider().findTokenByString(e.getValue(), config);
 				
@@ -90,7 +92,7 @@ public class AdvancedTokenField extends HorizontalLayout {
 			}
 			
 			setToInputField(inputField.getValue());
-			
+			*/
 			add(inputField);
 		}
 		
@@ -100,13 +102,13 @@ public class AdvancedTokenField extends HorizontalLayout {
 			}
 		}
 	}
-	
-	private void setToInputField(String searchValue) {
+	/*
+	private void setToInputField(Token searchValue) {
 		if (inputField != null) {
 			inputField.setOptions(config.getSuggestionProvider().findAvailableOptions(searchValue, config));
 		}
 	}
-	
+	*/
 	public void add(Token... tokens) {
 		if (ArrayUtils.isNotEmpty(tokens)) {
 			for (Token token : tokens) {

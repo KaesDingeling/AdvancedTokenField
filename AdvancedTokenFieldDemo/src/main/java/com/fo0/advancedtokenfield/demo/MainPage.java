@@ -42,6 +42,7 @@ public class MainPage extends VerticalLayout {
 	public MainPage() {
 		super();
 		
+		
 		formLayout = new FormLayout();
 		
 		allowDuplicates = new Checkbox("Allow duplicates", false);

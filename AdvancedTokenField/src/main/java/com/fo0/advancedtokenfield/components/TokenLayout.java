@@ -7,23 +7,21 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fo0.advancedtokenfield.data.model.AdvancedTokenFieldConfig;
 import com.fo0.advancedtokenfield.data.model.Token;
-import com.fo0.advancedtokenfield.data.model.TokenTemplate;
 import com.fo0.advancedtokenfield.data.model.Token.TokenBuilder;
 import com.fo0.advancedtokenfield.utils.CONSTANTS_AdvancedTokenField;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.polymertemplate.Id;
-import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 
 import lombok.Getter;
 
 @Tag("advancedtokenfield-token-layout")
-@HtmlImport("frontend://AdvancedTokenField/token-layout.html")
-public class TokenLayout extends PolymerTemplate<TokenTemplate> {
+//@HtmlImport("frontend://AdvancedTokenField/token-layout.html")
+public class TokenLayout extends HorizontalLayout {
 	private static final long serialVersionUID = -7438343157114436699L;
 	
 	@Getter
@@ -42,17 +40,13 @@ public class TokenLayout extends PolymerTemplate<TokenTemplate> {
 		return Token.builder();
 	}
 	
-	/**
-	 * Don´t use this
-	 * @param data
-	 */
-	@Deprecated
-	public TokenLayout(Token data) {
-		this(data, null);
-	}
-	
 	public TokenLayout(Token data, AdvancedTokenFieldConfig config) {
 		super();
+		
+		label = new Span();
+		remove = new Button();
+		
+		add(label, remove);
 		
 		this.config = config;
 		
@@ -87,9 +81,9 @@ public class TokenLayout extends PolymerTemplate<TokenTemplate> {
 	
 	public void update() {
 		if (data != null && StringUtils.isNotBlank(data.getValue())) {
-			getModel().setValue(data.getValue());
+			label.setText(data.getValue());
 		} else {
-			getModel().setValue(CONSTANTS_AdvancedTokenField.EMPTY_TOKEN_VALUE);
+			label.setText(CONSTANTS_AdvancedTokenField.EMPTY_TOKEN_VALUE);
 		}
 		
 		if (data != null && StringUtils.isNotBlank(data.getDescription())) {
